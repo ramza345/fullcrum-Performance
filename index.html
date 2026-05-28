@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum | Performance Assessment 2025/26</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#F6F5F2;color:#1A1A1A;font-size:14px;line-height:1.6;min-height:100vh}
+.app-header{background:#1B3A5C;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.app-header h1{font-size:17px;font-weight:700;color:#fff}
+.app-header p{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.header-right{display:flex;align-items:center;gap:10px}
+.badge{background:#C47D0E;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.05em}
+.nav-bar{background:#2A4F7A;display:flex;padding:0 32px;gap:0;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-tab{padding:12px 20px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.02em;user-select:none}
+.nav-tab:hover{color:rgba(255,255,255,.75)}
+.nav-tab.active{color:#fff;border-bottom-color:#4FBFB0}
+.main{max-width:960px;margin:0 auto;padding:24px 20px 60px}
+.banner{background:#fff;border:0.5px solid #E0DDD8;border-left:3px solid #C47D0E;border-radius:6px;padding:11px 14px;font-size:12px;color:#6B6760;margin-bottom:18px;line-height:1.7}
+.banner strong{color:#1A1A1A}
+.card{background:#fff;border:0.5px solid #E0DDD8;border-radius:10px;margin-bottom:16px;overflow:hidden}
+.card-head{background:#1B3A5C;padding:11px 16px;display:flex;align-items:center;gap:8px}
+.card-head h2{font-size:13px;font-weight:700;color:#fff;letter-spacing:.01em}
+.step-pill{background:rgba(255,255,255,.15);color:#fff;font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px}
+.card-body{padding:16px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.detail-grid{grid-template-columns:1fr}}
+.field label{display:block;font-size:10px;font-weight:700;color:#6B6760;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.field input,.field select{width:100%;border:0.5px solid #E0DDD8;border-radius:6px;padding:7px 10px;font-size:13px;color:#1A1A1A;background:#F6F5F2;outline:none;font-family:inherit;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:#1E7A6E;background:#fff}
+.field input[readonly]{opacity:.6;cursor:default}
+.scale-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:580px){.scale-grid{grid-template-columns:1fr 1fr}}
+.sc{border-radius:8px;padding:10px;border:0.5px solid #E0DDD8}
+.sc .sn{font-size:22px;font-weight:700;line-height:1;margin-bottom:2px}
+.sc .sl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.sc .sd{font-size:10px;color:#6B6760;line-height:1.4}
+.s4{background:#EAF4EC;border-color:#A8D5B0}.s4 .sn,.s4 .sl{color:#1A5C2A}
+.s3{background:#E8EFF6;border-color:#A8C0D8}.s3 .sn,.s3 .sl{color:#1B3A5C}
+.s2{background:#FEF3DC;border-color:#E8C97A}.s2 .sn,.s2 .sl{color:#8A5A00}
+.s1{background:#FDEAEA;border-color:#E8AAAA}.s1 .sn,.s1 .sl{color:#8B1A1A}
+.dim{border:0.5px solid #E0DDD8;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.dim:hover{box-shadow:0 2px 10px rgba(27,58,92,.07)}
+.dim-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#F6F5F2;border-bottom:0.5px solid #E0DDD8;gap:10px;flex-wrap:wrap}
+.dim-info{flex:1;min-width:160px}
+.dim-title{font-weight:700;font-size:12px;color:#1B3A5C}
+.dim-hint{font-size:10px;color:#6B6760;margin-top:1px;line-height:1.4}
+.pills{display:flex;gap:5px;flex-shrink:0}
+.pill{width:34px;height:34px;border-radius:50%;border:1.5px solid #E0DDD8;background:#fff;font-size:12px;font-weight:700;color:#6B6760;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;user-select:none;flex-shrink:0}
+.pill:hover{border-color:#1E7A6E;color:#1E7A6E;background:#D4EDEA}
+.p4.active{background:#EAF4EC;border-color:#1A5C2A;color:#1A5C2A}
+.p3.active{background:#E8EFF6;border-color:#1B3A5C;color:#1B3A5C}
+.p2.active{background:#FEF3DC;border-color:#8A5A00;color:#8A5A00}
+.p1.active{background:#FDEAEA;border-color:#8B1A1A;color:#8B1A1A}
+.dim-body{padding:11px 12px}
+.dim-body label{font-size:10px;font-weight:700;color:#6B6760;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px}
+.dim-body textarea{width:100%;border:0.5px solid #E0DDD8;border-radius:6px;padding:7px 10px;font-size:12px;color:#1A1A1A;background:#F6F5F2;resize:vertical;min-height:58px;outline:none;font-family:inherit;transition:border-color .15s;line-height:1.5}
+.dim-body textarea:focus{border-color:#1E7A6E;background:#fff}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.emp-ev{background:#EFF6FF;border:0.5px solid #C3D9F5;border-radius:6px;padding:8px 10px;font-size:11.5px;color:#1B3A5C;line-height:1.5;min-height:52px}
+.emp-ev.empty{color:#94A3B8;font-style:italic}
+.ev-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;display:block}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
+@media(max-width:600px){.qs{grid-template-columns:1fr}}
+.q{font-size:10px;font-style:italic;color:#6B6760;padding:5px 8px;background:#F6F5F2;border-radius:5px;border-left:2px solid #1E7A6E;line-height:1.4}
+.q.q4{border-left-color:#1A5C2A}.q.q3{border-left-color:#1B3A5C}.q.q2{border-left-color:#C47D0E}.q.q1{border-left-color:#8B1A1A}
+.score-box{background:#fff;border:0.5px solid #E0DDD8;border-radius:10px;overflow:hidden;margin-top:20px}
+.score-head{background:#1B3A5C;padding:12px 16px}
+.score-head h2{font-size:14px;font-weight:700;color:#fff}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:0.5px solid #E0DDD8}
+@media(max-width:580px){.score-grid{grid-template-columns:1fr}}
+.score-cell{padding:18px 20px;border-right:0.5px solid #E0DDD8;text-align:center}
+.score-cell:last-child{border-right:none;background:#1B3A5C}
+.score-cell .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6B6760;margin-bottom:6px}
+.score-cell:last-child .lbl{color:rgba(255,255,255,.5)}
+.score-cell .val{font-size:32px;font-weight:700;line-height:1;margin-bottom:3px;font-family:Georgia,serif}
+.score-cell:last-child .val{color:#fff}
+.sbadge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.narr{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;border-top:0.5px solid #E0DDD8}
+@media(max-width:580px){.narr{grid-template-columns:1fr}}
+.narr label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B6760;display:block;margin-bottom:5px}
+.narr textarea{width:100%;border:0.5px solid #E0DDD8;border-radius:6px;padding:8px 10px;font-size:12px;color:#1A1A1A;background:#F6F5F2;resize:vertical;min-height:70px;outline:none;font-family:inherit;line-height:1.6}
+.narr textarea:focus{border-color:#1E7A6E;background:#fff}
+.action-bar{display:flex;gap:10px;padding:14px 16px;border-top:0.5px solid #E0DDD8;justify-content:flex-end;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border:0.5px solid #E0DDD8;background:#fff;color:#6B6760;letter-spacing:.02em;transition:all .15s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn:hover{border-color:#1B3A5C;color:#1B3A5C}
+.btn-teal{background:#1E7A6E;color:#fff;border-color:#1E7A6E}
+.btn-teal:hover{background:#155F55;border-color:#155F55;color:#fff}
+.btn-navy{background:#1B3A5C;color:#fff;border-color:#1B3A5C}
+.btn-navy:hover{background:#2A4F7A;border-color:#2A4F7A;color:#fff}
+.btn-amber{background:#C47D0E;color:#fff;border-color:#C47D0E}
+.btn-amber:hover{background:#A36A0A;color:#fff}
+.btn-sm{padding:5px 12px;font-size:11px}
+.calib-note{font-size:10px;color:#6B6760;padding:10px 16px;border-top:0.5px solid #E0DDD8;line-height:1.5}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:#1B3A5C;color:#fff;padding:11px 22px;border-radius:8px;font-size:12px;font-weight:600;box-shadow:0 4px 18px rgba(27,58,92,.25);transition:transform .3s;z-index:9999;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat{background:#fff;border:0.5px solid #E0DDD8;border-radius:8px;padding:12px 14px;text-align:center}
+.stat .sv{font-size:28px;font-weight:700;font-family:Georgia,serif;line-height:1;color:#1B3A5C}
+.stat .sl{font-size:10px;color:#6B6760;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:#F6F5F2;padding:8px 10px;text-align:left;font-weight:700;color:#1B3A5C;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:0.5px solid #E0DDD8;white-space:nowrap}
+.tbl td{padding:8px 10px;border-bottom:0.5px solid #E0DDD8;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#F6F5F2}
+.empty-state{text-align:center;padding:48px 20px;color:#6B6760}
+.empty-state .icon{font-size:36px;margin-bottom:10px}
+.status-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.st-self{background:#E8EFF6;color:#1B3A5C}
+.st-mgr{background:#D4EDEA;color:#0F6E56}
+.st-hr{background:#FEF3DC;color:#8A5A00}
+.st-final{background:#EAF4EC;color:#1A5C2A}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:#fff;border-radius:12px;padding:24px;max-width:580px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.18)}
+.modal h3{font-size:16px;font-weight:700;color:#1B3A5C;margin-bottom:14px}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#6B6760;line-height:1;margin-top:-2px}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid #E0DDD8;font-size:12px;gap:12px}
+.detail-row:last-child{border-bottom:none}
+.detail-row .dl{color:#6B6760;white-space:nowrap}
+.detail-row .dr{font-weight:600;text-align:right}
+.hr-calib-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.hr-calib-row label{font-size:10px;font-weight:700;color:#6B6760;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px}
+.hr-calib-row select,.hr-calib-row input{width:100%;border:0.5px solid #E0DDD8;border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;outline:none}
+.hr-calib-row select:focus,.hr-calib-row input:focus{border-color:#1E7A6E}
+.info-box{background:#E8EFF6;border:0.5px solid #A8C0D8;border-radius:8px;padding:14px;margin-bottom:16px;font-size:12px;color:#1B3A5C;line-height:1.7}
+.info-box strong{font-weight:700}
+.step-box{background:#F6F5F2;border:0.5px solid #E0DDD8;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.step-box .step-num{display:inline-block;background:#1B3A5C;color:#fff;font-size:11px;font-weight:700;padding:1px 8px;border-radius:10px;margin-bottom:6px}
+.step-box p{font-size:12px;color:#1A1A1A;line-height:1.6}
+.step-box code{background:#E0DDD8;padding:1px 6px;border-radius:4px;font-size:11px;font-family:monospace;color:#1B3A5C;word-break:break-all}
+.mig-note{background:#FEF3DC;border:0.5px solid #E8C97A;border-radius:6px;padding:10px 14px;font-size:11px;color:#8A5A00;margin-top:12px;line-height:1.6}
+.separator{height:1px;background:#E0DDD8;margin:20px 0}
+.success-screen{text-align:center;padding:40px 20px}
+.success-screen .icon{font-size:48px;margin-bottom:16px}
+.success-screen h2{font-size:20px;font-weight:700;color:#1A5C2A;margin-bottom:8px}
+.success-screen p{font-size:13px;color:#6B6760;max-width:480px;margin:0 auto 20px}
+.rating-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0}
+.rs-cell{background:#F6F5F2;border:0.5px solid #E0DDD8;border-radius:6px;padding:8px 6px;text-align:center}
+.rs-cell .rt{font-size:9px;font-weight:700;color:#6B6760;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.rs-cell .rv{font-size:16px;font-weight:700;font-family:Georgia,serif}
+</style>
+</head>
+<body>
+<div class="app-header">
+  <div>
+    <h1>Fulcrum Group &amp; Collect</h1>
+    <p>Performance Assessment · 2025/26</p>
+  </div>
+  <div class="header-right">
+    <span class="badge">2025/26</span>
+  </div>
+</div>
+<div class="nav-bar" id="nav-bar">
+  <div class="nav-tab active" data-tab="employee" onclick="switchTab('employee')">Employee Self-Assessment</div>
+  <div class="nav-tab" data-tab="manager" onclick="switchTab('manager')">Manager Review</div>
+  <div class="nav-tab" data-tab="hr" onclick="switchTab('hr')">HR Dashboard</div>
+  <div class="nav-tab" data-tab="setup" onclick="switchTab('setup')">Setup Guide</div>
+</div>
+<div class="main" id="main"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIGURATION — update HR_EMAIL before deploying
+// ─────────────────────────────────────────────────────────────────────────────
+const CONFIG = {
+  HR_EMAIL: 'info@evolvra.co.za',
+  ORG_NAME: 'Fulcrum Group & Collect',
+  PERIOD: '2025/2026'
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA DEFINITIONS
+// ─────────────────────────────────────────────────────────────────────────────
+const BIZ = [
+  {id:'b1',title:'Core Responsibilities',hint:'Key tasks from your job description and how you delivered on them this year.'},
+  {id:'b2',title:'Quality of Work',hint:'Output standard, attention to detail, instances of error or rework.'},
+  {id:'b3',title:'Problem Solving',hint:'A challenge you navigated and the approach you took.'},
+  {id:'b4',title:'Ownership & Initiative',hint:'Tasks or projects you took on beyond your core role without being asked.'},
+  {id:'b5',title:'Collaboration & Teamwork',hint:'How you supported colleagues and contributed to shared outcomes.'},
+];
+const VALS = [
+  {id:'v1',title:'Agility',def:'Adapts quickly; embraces change; responds to shifting priorities with speed and composure.',
+   qs:['Led others through change and anticipated adjustments before being asked?','Adapted their approach when priorities shifted and recovered quickly?','Managed change with support, even if they initially struggled?','Resisted change or became disruptive during transitions?']},
+  {id:'v2',title:'Progress',def:'Pursues continuous improvement — personally, for their team, and for the business.',
+   qs:['Actively drove improvement initiatives and raised the bar for those around them?','Sought feedback, acted on development opportunities, and showed measurable growth?','Showed willingness to improve when guided, even if they did not self-initiate?','Showed little to no interest in developing their skills, even when supported?']},
+  {id:'v3',title:'Trust',def:'Acts with integrity; follows through on commitments; relied upon by colleagues and clients.',
+   qs:['Modelled transparency and accountability unconditionally, even when difficult?','Consistently followed through on commitments and took ownership when things went wrong?','Generally kept their word but struggled to own mistakes or communicate proactively?','Broken trust through repeated failures to deliver or lack of accountability?']},
+  {id:'v4',title:'Excellence',def:'Holds themselves to a high standard and takes pride in the quality of their work.',
+   qs:['Set and maintained the highest standards and actively challenged others to do the same?','Produced work that reliably met the required standard and self-corrected without being asked?','Strived for quality but produced inconsistent output that required regular review?','Consistently produced work below the required standard with little concern for quality?']},
+  {id:'v5',title:'Relationship',def:'Builds and sustains meaningful connections — internally with colleagues and externally with clients.',
+   qs:['Actively invested in relationships that elevated the team and the business?','Maintained constructive working relationships and contributed positively to team dynamics?','Made a reasonable effort with colleagues but had notable gaps in managing key relationships?','Damaged working relationships through their behaviour or communication?']},
+];
+const RLABELS = {4:'Rockstar',3:'Achiever',2:'Contributor',1:'Non-Performer'};
+const RCOLORS = {
+  4:{bg:'#EAF4EC',border:'#A8D5B0',color:'#1A5C2A'},
+  3:{bg:'#E8EFF6',border:'#A8C0D8',color:'#1B3A5C'},
+  2:{bg:'#FEF3DC',border:'#E8C97A',color:'#8A5A00'},
+  1:{bg:'#FDEAEA',border:'#E8AAAA',color:'#8B1A1A'}
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STORAGE LAYER — dual mode
+//   · Inside Claude.ai artifact panel  → window.storage (shared across users)
+//   · External browser / GitHub Pages  → localStorage (per device, for testing)
+// MIGRATION NOTE: To connect to SharePoint Lists, replace store_save_async,
+// store_load, store_list, and store_delete with SharePoint REST API calls.
+// ─────────────────────────────────────────────────────────────────────────────
+const _CLOUD = typeof window !== 'undefined' && typeof window.storage !== 'undefined';
+let _cache = {};   // used only in cloud mode
+let _index = [];   // used only in cloud mode
+
+async function initStorage() {
+  if (!_CLOUD) return;
+  try {
+    const r = await window.storage.get('fa_pm_index', true);
+    _index = r ? JSON.parse(r.value) : [];
+  } catch(e) { _index = []; }
+  for (const entry of _index) {
+    try {
+      const r = await window.storage.get('fa_pm_sub_' + entry.id, true);
+      if (r) _cache['sub_' + entry.id] = JSON.parse(r.value);
+    } catch(e) {}
+  }
+}
+
+function _updateIndex(key, data) {
+  if (!key.startsWith('sub_')) return;
+  const id = key.slice(4);
+  const entry = { id, name: data.name, role: data.role, dept: data.dept, submittedAt: data.submittedAt, status: data.status };
+  const i = _index.findIndex(x => x.id === id);
+  if (i >= 0) _index[i] = entry; else _index.push(entry);
+}
+
+async function store_save_async(key, data) {
+  if (_CLOUD) {
+    _cache[key] = data;
+    _updateIndex(key, data);
+    await window.storage.set('fa_pm_' + key, JSON.stringify(data), true);
+    await window.storage.set('fa_pm_index', JSON.stringify(_index), true);
+  } else {
+    localStorage.setItem('fulcrum_pm_' + key, JSON.stringify(data));
+  }
+}
+
+function store_save(key, data) {
+  if (_CLOUD) {
+    _cache[key] = data;
+    _updateIndex(key, data);
+    window.storage.set('fa_pm_' + key, JSON.stringify(data), true).catch(() => {});
+    window.storage.set('fa_pm_index', JSON.stringify(_index), true).catch(() => {});
+  } else {
+    localStorage.setItem('fulcrum_pm_' + key, JSON.stringify(data));
+  }
+}
+
+function store_load(key) {
+  if (_CLOUD) return _cache[key] || null;
+  const d = localStorage.getItem('fulcrum_pm_' + key);
+  return d ? JSON.parse(d) : null;
+}
+
+function store_list() {
+  if (_CLOUD) {
+    return _index
+      .map(e => _cache['sub_' + e.id])
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+  }
+  const prefix = 'fulcrum_pm_sub_';
+  const items = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith(prefix)) {
+      try { items.push(JSON.parse(localStorage.getItem(k))); } catch(e) {}
+    }
+  }
+  return items.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+}
+
+function store_delete(id) {
+  if (_CLOUD) {
+    delete _cache['sub_' + id];
+    _index = _index.filter(x => x.id !== id);
+    window.storage.delete('fa_pm_sub_' + id, true).catch(() => {});
+    window.storage.set('fa_pm_index', JSON.stringify(_index), true).catch(() => {});
+  } else {
+    localStorage.removeItem('fulcrum_pm_sub_' + id);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+function avg(arr) {
+  const v = arr.filter(x => x > 0);
+  return v.length ? +(v.reduce((a,b) => a+b, 0) / v.length).toFixed(2) : null;
+}
+function calcScores(ratings) {
+  const biz = BIZ.map(d => parseInt(ratings['r_'+d.id]||0));
+  const val = VALS.map(d => parseInt(ratings['r_'+d.id]||0));
+  const bs = avg(biz), vs = avg(val);
+  const fs = (bs && vs) ? +((bs+vs)/2).toFixed(2) : null;
+  return {bs, vs, fs};
+}
+function badgeHTML(score, small) {
+  if (!score) return `<span class="sbadge" style="background:#F6F5F2;color:#6B6760">Not rated</span>`;
+  const r = Math.round(score), c = RCOLORS[r]||RCOLORS[3];
+  const sz = small ? 'font-size:9px' : '';
+  return `<span class="sbadge" style="background:${c.bg};color:${c.color};border:0.5px solid ${c.border};${sz}">${RLABELS[r]}</span>`;
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'});
+}
+function toast(msg, dur=3500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+function getURLParam(p) {
+  return new URLSearchParams(window.location.search).get(p);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let currentTab = 'employee';
+let empRatings = {};
+let mgrRatings = {};
+let currentSubId = null;
+let showSuccess = false;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(el => {
+    el.classList.toggle('active', el.dataset.tab === tab);
+  });
+  showSuccess = false;
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EMPLOYEE TAB
+// ─────────────────────────────────────────────────────────────────────────────
+function renderEmployee() {
+  if (showSuccess) { renderSubmitSuccess(); return; }
+
+  let html = `<div class="banner"><strong>Self-assessment:</strong> No targets were set for this cycle. Rate yourself honestly based on your understanding of what your role requires and the evidence of how you delivered throughout the year. Complete all sections and click <em>Submit Self-Assessment</em> when done.</div>`;
+
+  // Details
+  html += `<div class="card">
+    <div class="card-head"><span class="step-pill">Step 1</span><h2>Your Details</h2></div>
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="field"><label>Your Full Name *</label><input type="text" id="f_name" placeholder="e.g. Sarah Johnson"></div>
+        <div class="field"><label>Job Title / Role *</label><input type="text" id="f_role" placeholder="e.g. Senior Accountant"></div>
+        <div class="field"><label>Department *</label><input type="text" id="f_dept" placeholder="e.g. Finance"></div>
+        <div class="field"><label>Line Manager's Name *</label><input type="text" id="f_mgr" placeholder="e.g. John Smith"></div>
+        <div class="field"><label>Manager's Email *</label><input type="email" id="f_mgr_email" placeholder="manager@fulcrum.co.za"></div>
+        <div class="field"><label>Assessment Period</label><input type="text" value="${CONFIG.PERIOD}" readonly></div>
+      </div>
+    </div></div>`;
+
+  // Scale
+  html += `<div class="card">
+    <div class="card-head"><h2>Rating Scale</h2></div>
+    <div class="card-body"><div class="scale-grid">
+      <div class="sc s4"><div class="sn">4</div><div class="sl">Rockstar</div><div class="sd">Exceeds in all areas. Self-directed. Visible values role model.</div></div>
+      <div class="sc s3"><div class="sn">3</div><div class="sl">Achiever</div><div class="sd">Consistently meets expectations. Reliable delivery. Values evident.</div></div>
+      <div class="sc s2"><div class="sn">2</div><div class="sl">Contributor</div><div class="sd">Partially meets expectations. Requires guidance. Values inconsistent.</div></div>
+      <div class="sc s1"><div class="sn">1</div><div class="sl">Non-Performer</div><div class="sd">Does not meet expectations. Constant intervention. Values absent.</div></div>
+    </div></div></div>`;
+
+  // Section A
+  html += `<div class="card">
+    <div class="card-head"><span class="step-pill">Step 2</span><h2>Section A — Business Performance</h2></div>
+    <div class="card-body">${BIZ.map(d => buildDimRow(d, false, false)).join('')}</div></div>`;
+
+  // Section B
+  html += `<div class="card">
+    <div class="card-head"><span class="step-pill">Step 3</span><h2>Section B — Company Values</h2></div>
+    <div class="card-body">${VALS.map(d => buildDimRow(d, true, false)).join('')}</div></div>`;
+
+  // Score summary
+  html += buildScoreBox(false);
+  document.getElementById('main').innerHTML = html;
+  applyRatings(empRatings, false);
+  updateScores(false);
+}
+
+function buildDimRow(dim, isVal, isMgr) {
+  const pfx = isMgr ? 'mgr_' : 'emp_';
+  let bodyHTML = '';
+
+  if (isVal) {
+    const qsHtml = dim.qs.map((q,i) => `<div class="q q${4-i}"><strong>${4-i}:</strong> ${q}</div>`).join('');
+    if (isMgr) {
+      const sub = currentSubId ? store_load('sub_'+currentSubId) : null;
+      const empEv = sub ? (sub.evidence && sub.evidence[dim.id] || '') : '';
+      const empR = sub ? (sub.ratings && sub.ratings['r_'+dim.id]) : null;
+      const badge = empR ? badgeHTML(empR, true) : '';
+      bodyHTML = `<div class="dim-body"><div class="qs">${qsHtml}</div>
+        <div class="two-col">
+          <div><span class="ev-lbl" style="color:#1B3A5C">Employee evidence ${badge}</span><div class="emp-ev ${empEv?'':'empty'}">${empEv||'No evidence submitted.'}</div></div>
+          <div><span class="ev-lbl" style="color:#1B3A5C">Your assessment notes</span><textarea id="${pfx}ev_${dim.id}" rows="3" placeholder="Your observations..."></textarea></div>
+        </div></div>`;
+    } else {
+      bodyHTML = `<div class="dim-body"><div class="qs">${qsHtml}</div>
+        <label>Behavioural evidence — one specific example from the past 12 months (required)</label>
+        <textarea id="${pfx}ev_${dim.id}" rows="3" placeholder="What did you do? Describe the situation, your actions, and the outcome..."></textarea></div>`;
+    }
+  } else {
+    if (isMgr) {
+      const sub = currentSubId ? store_load('sub_'+currentSubId) : null;
+      const empEv = sub ? (sub.evidence && sub.evidence[dim.id] || '') : '';
+      const empR = sub ? (sub.ratings && sub.ratings['r_'+dim.id]) : null;
+      const badge = empR ? badgeHTML(empR, true) : '';
+      bodyHTML = `<div class="dim-body"><div class="two-col">
+        <div><span class="ev-lbl" style="color:#1B3A5C">Employee evidence ${badge}</span><div class="emp-ev ${empEv?'':'empty'}">${empEv||'No evidence submitted.'}</div></div>
+        <div><span class="ev-lbl" style="color:#1B3A5C">Rating rationale</span><textarea id="${pfx}ev_${dim.id}" rows="3" placeholder="Explain your rating for this dimension..."></textarea></div>
+      </div></div>`;
+    } else {
+      bodyHTML = `<div class="dim-body"><label>Evidence — what did you do and what was the impact?</label>
+        <textarea id="${pfx}ev_${dim.id}" rows="3" placeholder="Describe your actions and outcomes this year..."></textarea></div>`;
+    }
+  }
+
+  const rArr = isMgr ? mgrRatings : empRatings;
+  const curR = parseInt(rArr['r_'+dim.id]||0);
+  const pills = [4,3,2,1].map(n =>
+    `<div class="pill p${n}${curR===n?' active':''}" onclick="rateDim('${dim.id}',${n},${isMgr})">${n}</div>`
+  ).join('');
+
+  return `<div class="dim" id="dim_${isMgr?'mgr':'emp'}_${dim.id}">
+    <div class="dim-head">
+      <div class="dim-info"><div class="dim-title">${dim.title}</div><div class="dim-hint">${isVal?dim.def:dim.hint}</div></div>
+      <div class="pills">${pills}</div>
+    </div>${bodyHTML}</div>`;
+}
+
+function buildScoreBox(isMgr) {
+  const scores = calcScores(isMgr ? mgrRatings : empRatings);
+  return `<div class="score-box">
+    <div class="score-head"><h2>Score Summary</h2></div>
+    <div class="score-grid">
+      <div class="score-cell"><div class="lbl">Business Score</div><div class="val" id="${isMgr?'mgr':'emp'}_sc_biz" style="color:${scores.bs?'#1B3A5C':'#ccc'}">${scores.bs||'—'}</div><div style="font-size:11px;color:#6B6760;margin-bottom:4px">out of 4</div><div id="${isMgr?'mgr':'emp'}_sc_biz_b">${badgeHTML(scores.bs)}</div></div>
+      <div class="score-cell"><div class="lbl">Values Score</div><div class="val" id="${isMgr?'mgr':'emp'}_sc_val" style="color:${scores.vs?'#1E7A6E':'#ccc'}">${scores.vs||'—'}</div><div style="font-size:11px;color:#6B6760;margin-bottom:4px">out of 4</div><div id="${isMgr?'mgr':'emp'}_sc_val_b">${badgeHTML(scores.vs)}</div></div>
+      <div class="score-cell"><div class="lbl">Final Rating</div><div class="val" id="${isMgr?'mgr':'emp'}_sc_fin">${scores.fs||'—'}</div><div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:4px">out of 4</div><div id="${isMgr?'mgr':'emp'}_sc_fin_b">${badgeHTML(scores.fs)}</div></div>
+    </div>
+    <div class="narr">
+      <div><label>Overall Strengths This Year</label><textarea id="${isMgr?'mgr':'emp'}_strengths" rows="3" placeholder="Key strengths demonstrated during this review period..."></textarea></div>
+      <div><label>Areas for Development</label><textarea id="${isMgr?'mgr':'emp'}_development" rows="3" placeholder="Priority development areas for the next cycle..."></textarea></div>
+    </div>
+    <div class="action-bar">
+      <button class="btn" onclick="resetForm(${isMgr})">↺ Reset</button>
+      ${isMgr
+        ? `<button class="btn btn-navy" onclick="submitManager()">✓ Save Manager Review</button>`
+        : `<button class="btn btn-teal" onclick="submitEmployee()">✓ Submit Self-Assessment</button>`}
+    </div>
+    <div class="calib-note"><strong>Calibration note:</strong> All ratings are subject to executive calibration before being communicated. A Rockstar rating requires full evidence across all five values and all business dimensions. · ${CONFIG.ORG_NAME} · Evolvra People Solutions · 2026</div>
+  </div>`;
+}
+
+function rateDim(id, val, isMgr) {
+  const rObj = isMgr ? mgrRatings : empRatings;
+  rObj['r_'+id] = val;
+  const prefix = isMgr ? 'mgr' : 'emp';
+  const dim = document.getElementById(`dim_${prefix}_${id}`);
+  if (dim) {
+    dim.querySelectorAll('.pill').forEach(p => {
+      const pv = parseInt(p.textContent);
+      p.className = `pill p${pv}${pv===val?' active':''}`;
+    });
+  }
+  updateScores(isMgr);
+}
+
+function applyRatings(rObj, isMgr) {
+  Object.keys(rObj).forEach(key => {
+    if (key.startsWith('r_')) {
+      const id = key.slice(2);
+      rateDim(id, parseInt(rObj[key]), isMgr);
+    }
+  });
+}
+
+function updateScores(isMgr) {
+  const p = isMgr ? 'mgr' : 'emp';
+  const s = calcScores(isMgr ? mgrRatings : empRatings);
+  const set = (id, val, col) => { const el=document.getElementById(id); if(el){el.textContent=val||'—';if(col&&val)el.style.color=col;} };
+  const setB = (id, score) => { const el=document.getElementById(id); if(el) el.innerHTML=badgeHTML(score); };
+  set(p+'_sc_biz', s.bs, '#1B3A5C');
+  set(p+'_sc_val', s.vs, '#1E7A6E');
+  set(p+'_sc_fin', s.fs, null);
+  setB(p+'_sc_biz_b', s.bs);
+  setB(p+'_sc_val_b', s.vs);
+  setB(p+'_sc_fin_b', s.fs);
+}
+
+function gatherEvidence(isMgr) {
+  const pfx = isMgr ? 'mgr_' : 'emp_';
+  const ev = {};
+  [...BIZ,...VALS].forEach(d => {
+    const el = document.getElementById(pfx+'ev_'+d.id);
+    if (el) ev[d.id] = el.value;
+  });
+  return ev;
+}
+
+function validateEmployee() {
+  const req = ['f_name','f_role','f_dept','f_mgr','f_mgr_email'];
+  for (const id of req) {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) {
+      toast('Please fill in all required fields (marked with *).'); return false;
+    }
+  }
+  const rated = [...BIZ,...VALS].every(d => empRatings['r_'+d.id] > 0);
+  if (!rated) { toast('Please rate all 10 dimensions before submitting.'); return false; }
+  return true;
+}
+
+async function submitEmployee() {
+  if (!validateEmployee()) return;
+  const scores = calcScores(empRatings);
+  const id = uid();
+  const sub = {
+    id,
+    name: document.getElementById('f_name').value.trim(),
+    role: document.getElementById('f_role').value.trim(),
+    dept: document.getElementById('f_dept').value.trim(),
+    manager: document.getElementById('f_mgr').value.trim(),
+    managerEmail: document.getElementById('f_mgr_email').value.trim(),
+    period: CONFIG.PERIOD,
+    ratings: {...empRatings},
+    evidence: gatherEvidence(false),
+    strengths: document.getElementById('emp_strengths')?.value||'',
+    development: document.getElementById('emp_development')?.value||'',
+    bizScore: scores.bs,
+    valScore: scores.vs,
+    finalScore: scores.fs,
+    finalCategory: scores.fs ? RLABELS[Math.round(scores.fs)] : null,
+    submittedAt: new Date().toISOString(),
+    status: 'self_submitted',
+    mgrReview: null,
+    hrCalib: null
+  };
+  try {
+    await store_save_async('sub_'+id, sub);
+    currentSubId = id;
+    empRatings = {};
+    showSuccess = true;
+    render();
+    sendManagerEmail(sub);
+  } catch(e) {
+    toast('Failed to save. Please try again. Error: ' + e.message);
+  }
+}
+
+function sendManagerEmail(sub) {
+  const baseURL = window.location.href.split('?')[0];
+  const reviewURL = `${baseURL}?tab=manager&id=${sub.id}`;
+  const scores = `Business: ${sub.bizScore||'?'}/4 | Values: ${sub.valScore||'?'}/4 | Final: ${sub.finalScore||'?'}/4 (${sub.finalCategory||'?'})`;
+  const subject = encodeURIComponent(`[Action Required] ${sub.name} — Performance Self-Assessment 2025/26`);
+  const body = encodeURIComponent(
+    `Dear ${sub.manager},\n\n${sub.name} has submitted their performance self-assessment for 2025/26 and it is ready for your review.\n\nEmployee: ${sub.name}\nRole: ${sub.role}\nDepartment: ${sub.dept}\nSelf-assessment scores: ${scores}\n\nPlease click the link below to open the form and complete your manager review:\n${reviewURL}\n\nOnce you have submitted your review, HR will be notified automatically for calibration.\n\nKind regards,\nHR · ${CONFIG.ORG_NAME}`
+  );
+  window.location.href = `mailto:${sub.managerEmail}?subject=${subject}&body=${body}`;
+}
+
+function renderSubmitSuccess() {
+  const sub = currentSubId ? store_load('sub_'+currentSubId) : null;
+  let html = `<div class="card"><div class="card-body"><div class="success-screen">
+    <div class="icon">✅</div>
+    <h2>Self-Assessment Submitted</h2>
+    <p>Your self-assessment has been saved. An email to your manager has been prepared — please check your email client and send it.</p>`;
+  if (sub) {
+    const scores = calcScores(sub.ratings||{});
+    html += `<div class="rating-summary-grid">
+      <div class="rs-cell"><div class="rt">Business</div><div class="rv" style="color:#1B3A5C">${sub.bizScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Values</div><div class="rv" style="color:#1E7A6E">${sub.valScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Final</div><div class="rv" style="color:#1B3A5C">${sub.finalScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Category</div><div class="rv" style="color:#1A5C2A;font-size:12px">${sub.finalCategory||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Status</div><div class="rv" style="font-size:11px">⏳ Awaiting manager</div></div>
+    </div>`;
+    html += `<div style="margin-top:12px"><button class="btn btn-teal btn-sm" onclick="resendManagerEmail('${sub.id}')">📧 Resend email to manager</button></div>`;
+  }
+  html += `<p style="font-size:11px;color:#94A3B8;margin-top:16px">Your submission ID: <strong style="color:#1B3A5C">${currentSubId||'—'}</strong><br>Save this ID in case you need to reference your submission.</p>
+    <button class="btn" style="margin-top:12px" onclick="showSuccess=false;empRatings={};currentSubId=null;render()">Submit another assessment</button>
+  </div></div></div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+function resendManagerEmail(id) {
+  const sub = store_load('sub_'+id);
+  if (sub) sendManagerEmail(sub);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MANAGER TAB
+// ─────────────────────────────────────────────────────────────────────────────
+function renderManager() {
+  const paramId = getURLParam('id');
+  const paramTab = getURLParam('tab');
+  if (paramTab === 'manager' && paramId && !currentSubId) {
+    currentSubId = paramId;
+  }
+
+  if (!currentSubId) {
+    renderManagerSearch(); return;
+  }
+
+  const sub = store_load('sub_'+currentSubId);
+  if (!sub) {
+    document.getElementById('main').innerHTML = `<div class="card"><div class="card-body"><div class="empty-state"><div class="icon">🔍</div><p>Submission not found. The ID may be incorrect or the assessment was submitted on a different device.</p><button class="btn" onclick="currentSubId=null;render()">← Go back</button></div></div></div>`;
+    return;
+  }
+
+  if (sub.status === 'mgr_reviewed' || sub.status === 'hr_calibrated' || sub.status === 'final') {
+    document.getElementById('main').innerHTML = `<div class="card"><div class="card-body"><div class="empty-state"><div class="icon">✅</div><p>You have already submitted your manager review for <strong>${sub.name}</strong>.</p><button class="btn" onclick="currentSubId=null;render()">← Review another employee</button></div></div></div>`;
+    return;
+  }
+
+  if (showSuccess) { renderManagerSuccess(sub); return; }
+
+  let html = `<div class="banner"><strong>Manager review for ${sub.name}:</strong> The employee's self-assessment is shown on the left. Add your independent rating and rationale on the right. Rate each dimension based on your direct observations.</div>`;
+
+  html += `<div class="card">
+    <div class="card-head"><h2>Employee Details</h2></div>
+    <div class="card-body"><div class="detail-grid">
+      <div class="field"><label>Employee</label><input type="text" value="${sub.name}" readonly></div>
+      <div class="field"><label>Role</label><input type="text" value="${sub.role}" readonly></div>
+      <div class="field"><label>Department</label><input type="text" value="${sub.dept}" readonly></div>
+      <div class="field"><label>Your Name *</label><input type="text" id="mgr_name" placeholder="Your full name"></div>
+      <div class="field"><label>Your Email *</label><input type="email" id="mgr_email" placeholder="your@email.co.za"></div>
+      <div class="field"><label>Period</label><input type="text" value="${CONFIG.PERIOD}" readonly></div>
+    </div></div></div>`;
+
+  html += `<div class="card">
+    <div class="card-head"><span class="step-pill">Section A</span><h2>Business Performance — Manager Review</h2></div>
+    <div class="card-body">${BIZ.map(d => buildDimRow(d, false, true)).join('')}</div></div>`;
+
+  html += `<div class="card">
+    <div class="card-head"><span class="step-pill">Section B</span><h2>Company Values — Manager Review</h2></div>
+    <div class="card-body">${VALS.map(d => buildDimRow(d, true, true)).join('')}</div></div>`;
+
+  html += buildScoreBox(true);
+  document.getElementById('main').innerHTML = html;
+  applyRatings(mgrRatings, true);
+  updateScores(true);
+}
+
+function renderManagerSearch() {
+  const subs = store_list().filter(s => s.status === 'self_submitted');
+  let html = `<div class="banner"><strong>Manager review:</strong> Select an employee from the list below, or paste their submission ID to open their self-assessment for review. If the list is empty, the employee has not yet submitted their self-assessment.</div>`;
+
+  html += `<div class="card">
+    <div class="card-head"><h2>Find Submission by ID</h2></div>
+    <div class="card-body" style="display:flex;gap:10px;align-items:flex-end">
+      <div class="field" style="flex:1"><label>Submission ID</label><input type="text" id="sub_id_input" placeholder="Paste the ID from the employee's notification email"></div>
+      <button class="btn btn-navy" onclick="loadSubById()">Open</button>
+    </div></div>`;
+
+  if (subs.length > 0) {
+    html += `<div class="card">
+      <div class="card-head"><h2>Awaiting Your Review (${subs.length})</h2></div>
+      <div class="card-body" style="padding:0;overflow-x:auto"><table class="tbl">
+        <thead><tr><th>Employee</th><th>Role</th><th>Dept</th><th>Self Rating</th><th>Submitted</th><th></th></tr></thead>
+        <tbody>`;
+    subs.forEach(s => {
+      html += `<tr>
+        <td style="font-weight:600;color:#1B3A5C">${s.name}</td>
+        <td>${s.role}</td><td>${s.dept}</td>
+        <td>${badgeHTML(s.finalScore, true)}</td>
+        <td>${fmtDate(s.submittedAt)}</td>
+        <td><button class="btn btn-teal btn-sm" onclick="currentSubId='${s.id}';mgrRatings={};render()">Review →</button></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  } else {
+    html += `<div class="card"><div class="card-body"><div class="empty-state"><div class="icon">📋</div><p>No self-assessments are awaiting review yet.</p><p style="font-size:11px;margin-top:6px">Share the form link with employees and ask them to submit their self-assessment first.</p></div></div></div>`;
+  }
+  document.getElementById('main').innerHTML = html;
+}
+
+function loadSubById() {
+  const id = document.getElementById('sub_id_input')?.value?.trim();
+  if (!id) { toast('Please enter a submission ID.'); return; }
+  const sub = store_load('sub_'+id);
+  if (!sub) { toast('No submission found for that ID. Check the ID and try again.'); return; }
+  currentSubId = id;
+  mgrRatings = {};
+  render();
+}
+
+async function submitManager() {
+  const mgrName = document.getElementById('mgr_name')?.value?.trim();
+  const mgrEmail = document.getElementById('mgr_email')?.value?.trim();
+  if (!mgrName || !mgrEmail) { toast('Please enter your name and email address.'); return; }
+  const rated = [...BIZ,...VALS].every(d => mgrRatings['r_'+d.id] > 0);
+  if (!rated) { toast('Please rate all 10 dimensions before saving.'); return; }
+
+  const sub = store_load('sub_'+currentSubId);
+  if (!sub) { toast('Error: submission not found.'); return; }
+
+  const scores = calcScores(mgrRatings);
+  sub.mgrReview = {
+    mgrName, mgrEmail,
+    ratings: {...mgrRatings},
+    evidence: gatherEvidence(true),
+    strengths: document.getElementById('mgr_strengths')?.value||'',
+    development: document.getElementById('mgr_development')?.value||'',
+    bizScore: scores.bs,
+    valScore: scores.vs,
+    finalScore: scores.fs,
+    finalCategory: scores.fs ? RLABELS[Math.round(scores.fs)] : null,
+    reviewedAt: new Date().toISOString()
+  };
+  sub.status = 'mgr_reviewed';
+  try {
+    await store_save_async('sub_'+currentSubId, sub);
+    mgrRatings = {};
+    showSuccess = true;
+    render();
+    sendHREmail(sub);
+  } catch(e) {
+    toast('Failed to save. Please try again. Error: ' + e.message);
+  }
+}
+
+function sendHREmail(sub) {
+  const m = sub.mgrReview;
+  const baseURL = window.location.href.split('?')[0];
+  const hrURL = `${baseURL}?tab=hr`;
+  const subject = encodeURIComponent(`[HR Calibration] ${sub.name} — Manager Review Complete`);
+  const body = encodeURIComponent(
+    `Dear HR Team,\n\nThe manager review for ${sub.name} has been completed and is ready for HR calibration.\n\nEmployee: ${sub.name} (${sub.role}, ${sub.dept})\nManager: ${m.mgrName}\n\nEmployee self-assessment final score: ${sub.finalScore||'?'}/4 — ${sub.finalCategory||'?'}\nManager review final score: ${m.finalScore||'?'}/4 — ${m.finalCategory||'?'}\n\nPlease log in to the HR Dashboard to review and calibrate:\n${hrURL}\n\nSubmission ID: ${sub.id}\n\nKind regards,\nAutomated notification · ${CONFIG.ORG_NAME}`
+  );
+  window.location.href = `mailto:${CONFIG.HR_EMAIL}?subject=${subject}&body=${body}`;
+}
+
+function renderManagerSuccess(sub) {
+  const m = sub.mgrReview;
+  document.getElementById('main').innerHTML = `<div class="card"><div class="card-body"><div class="success-screen">
+    <div class="icon">✅</div>
+    <h2>Manager Review Saved</h2>
+    <p>Your review for <strong>${sub.name}</strong> has been saved. An email to HR (${CONFIG.HR_EMAIL}) has been prepared — please check your email client and send it.</p>
+    <div class="rating-summary-grid">
+      <div class="rs-cell"><div class="rt">Biz Score</div><div class="rv" style="color:#1B3A5C">${m?.bizScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Values</div><div class="rv" style="color:#1E7A6E">${m?.valScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Final</div><div class="rv">${m?.finalScore||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Category</div><div class="rv" style="font-size:11px;color:#1A5C2A">${m?.finalCategory||'—'}</div></div>
+      <div class="rs-cell"><div class="rt">Status</div><div class="rv" style="font-size:11px">⏳ HR Calibration</div></div>
+    </div>
+    <button class="btn" style="margin-top:16px" onclick="showSuccess=false;currentSubId=null;mgrRatings={};render()">Review another employee</button>
+  </div></div></div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HR DASHBOARD TAB
+// ─────────────────────────────────────────────────────────────────────────────
+function renderHR() {
+  const all = store_list();
+  const total = all.length;
+  const mgrDone = all.filter(s => s.status !== 'self_submitted').length;
+  const calibrated = all.filter(s => s.status === 'hr_calibrated' || s.status === 'final').length;
+  const final = all.filter(s => s.status === 'final').length;
+  const dist = {4:0,3:0,2:0,1:0};
+  all.forEach(s => {
+    const score = s.mgrReview?.finalScore || s.finalScore;
+    if (score) dist[Math.round(score)]++;
+  });
+
+  let html = `<div class="banner"><strong>HR Dashboard:</strong> Live view of all submissions. Use this view to track progress, calibrate ratings, and generate reports. All ratings shown are provisional until marked as Final.</div>`;
+
+  html += `<div class="stat-row">
+    <div class="stat"><div class="sv">${total}</div><div class="sl">Self-Assessments</div></div>
+    <div class="stat"><div class="sv">${mgrDone}</div><div class="sl">Manager Reviews</div></div>
+    <div class="stat"><div class="sv">${calibrated}</div><div class="sl">Calibrated</div></div>
+    <div class="stat"><div class="sv" style="color:#1A5C2A">${final}</div><div class="sl">Finalised</div></div>
+    <div class="stat"><div class="sv" style="color:#8B1A1A">${total-mgrDone}</div><div class="sl">Pending Review</div></div>
+  </div>`;
+
+  // Distribution vs bell curve
+  html += `<div class="card">
+    <div class="card-head"><h2>Rating Distribution vs Expected Bell Curve</h2></div>
+    <div class="card-body" style="padding:0;overflow-x:auto"><table class="tbl">
+      <thead><tr><th>Category</th><th>Count</th><th>Actual %</th><th>Expected %</th><th>Variance</th></tr></thead><tbody>`;
+  const exp = {4:10,3:40,2:40,1:10};
+  [4,3,2,1].forEach(r => {
+    const n = dist[r]||0, pct = total ? Math.round(n/total*100) : 0, e = exp[r], diff = pct-e;
+    const c = RCOLORS[r];
+    const status = total===0?'—': Math.abs(diff)<=10
+      ? `<span style="color:#1A5C2A">✓ Within range</span>`
+      : `<span style="color:#8B1A1A">⚠ ${diff>0?'+':''}${diff}% vs expected</span>`;
+    html += `<tr><td><span class="sbadge" style="background:${c.bg};color:${c.color};border:0.5px solid ${c.border}">${RLABELS[r]}</span></td><td>${n}</td><td>${pct}%</td><td>${e}%</td><td>${status}</td></tr>`;
+  });
+  html += `</tbody></table></div></div>`;
+
+  if (total === 0) {
+    html += `<div class="card"><div class="card-body"><div class="empty-state"><div class="icon">📋</div><p>No submissions yet.</p><p style="font-size:11px;margin-top:6px">Share the form link with employees to begin collecting self-assessments.</p></div></div></div>`;
+  } else {
+    html += `<div class="card">
+      <div class="card-head"><h2>All Submissions (${total})</h2>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.2)" onclick="exportCSV()">↓ Export CSV</button>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0;overflow-x:auto"><table class="tbl">
+        <thead><tr><th>Employee</th><th>Role</th><th>Dept</th><th>Self Score</th><th>Mgr Score</th><th>Status</th><th>Submitted</th><th></th></tr></thead>
+        <tbody>`;
+    all.forEach(s => {
+      const mScore = s.mgrReview?.finalScore;
+      const stMap = {
+        'self_submitted':'<span class="status-pill st-self">Self Only</span>',
+        'mgr_reviewed':'<span class="status-pill st-mgr">Mgr Reviewed</span>',
+        'hr_calibrated':'<span class="status-pill st-hr">Calibrated</span>',
+        'final':'<span class="status-pill st-final">Final</span>'
+      };
+      html += `<tr>
+        <td style="font-weight:600;color:#1B3A5C">${s.name}</td>
+        <td>${s.role}</td><td>${s.dept}</td>
+        <td>${badgeHTML(s.finalScore,true)}</td>
+        <td>${mScore ? badgeHTML(mScore,true) : '<span style="color:#ccc;font-size:11px">Pending</span>'}</td>
+        <td>${stMap[s.status]||s.status}</td>
+        <td>${fmtDate(s.submittedAt)}</td>
+        <td><button class="btn btn-sm" onclick="showHRDetail('${s.id}')">View</button></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  }
+  document.getElementById('main').innerHTML = html;
+}
+
+function showHRDetail(id) {
+  const sub = store_load('sub_'+id);
+  if (!sub) return;
+  const m = sub.mgrReview;
+  const calib = sub.hrCalib;
+  let rows = `
+    <div class="detail-row"><span class="dl">Employee</span><span class="dr">${sub.name}</span></div>
+    <div class="detail-row"><span class="dl">Role</span><span class="dr">${sub.role}</span></div>
+    <div class="detail-row"><span class="dl">Department</span><span class="dr">${sub.dept}</span></div>
+    <div class="detail-row"><span class="dl">Manager</span><span class="dr">${sub.manager}</span></div>
+    <div class="detail-row"><span class="dl">Submitted</span><span class="dr">${fmtDate(sub.submittedAt)}</span></div>
+    <div class="detail-row"><span class="dl">Self — Business</span><span class="dr">${sub.bizScore||'—'}/4</span></div>
+    <div class="detail-row"><span class="dl">Self — Values</span><span class="dr">${sub.valScore||'—'}/4</span></div>
+    <div class="detail-row"><span class="dl">Self — Final</span><span class="dr">${sub.finalScore||'—'}/4 ${badgeHTML(sub.finalScore,true)}</span></div>`;
+
+  if (m) {
+    rows += `<div class="separator"></div>
+    <div class="detail-row"><span class="dl">Manager</span><span class="dr">${m.mgrName}</span></div>
+    <div class="detail-row"><span class="dl">Mgr — Business</span><span class="dr">${m.bizScore||'—'}/4</span></div>
+    <div class="detail-row"><span class="dl">Mgr — Values</span><span class="dr">${m.valScore||'—'}/4</span></div>
+    <div class="detail-row"><span class="dl">Mgr — Final</span><span class="dr">${m.finalScore||'—'}/4 ${badgeHTML(m.finalScore,true)}</span></div>`;
+  }
+
+  // HR calibration form
+  const calibScore = calib?.finalScore || m?.finalScore || sub.finalScore || '';
+  const calibCat = calib?.finalCategory || (calibScore ? RLABELS[Math.round(calibScore)] : '');
+  rows += `<div class="separator"></div>
+    <div style="margin-bottom:8px;font-size:11px;font-weight:700;color:#1B3A5C;text-transform:uppercase;letter-spacing:.06em">HR Calibration</div>
+    <div class="hr-calib-row">
+      <div><label>Calibrated Final Score (1–4)</label><input type="number" id="hr_cal_score" min="1" max="4" step="0.1" value="${calibScore}" placeholder="e.g. 3.0"></div>
+      <div><label>Final Category</label><select id="hr_cal_cat"><option value="">— Select —</option>${[4,3,2,1].map(r=>`<option value="${RLABELS[r]}"${calibCat===RLABELS[r]?' selected':''}>${r} — ${RLABELS[r]}</option>`).join('')}</select></div>
+    </div>
+    <div style="margin-bottom:10px"><label style="font-size:10px;font-weight:700;color:#6B6760;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px">Calibration Notes</label>
+    <textarea id="hr_cal_notes" rows="3" style="width:100%;border:0.5px solid #E0DDD8;border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;outline:none;resize:vertical">${calib?.notes||''}</textarea></div>`;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'hr-modal';
+  overlay.innerHTML = `<div class="modal">
+    <button class="modal-close" onclick="document.getElementById('hr-modal').remove()">×</button>
+    <h3>${sub.name} — Assessment Detail</h3>
+    ${rows}
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-navy" onclick="saveCalibration('${id}')">Save Calibration</button>
+      <button class="btn btn-teal" onclick="markFinal('${id}')">Mark Final &amp; Notify Employee</button>
+      <button class="btn" onclick="document.getElementById('hr-modal').remove()">Close</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+}
+
+async function saveCalibration(id) {
+  const sub = store_load('sub_'+id);
+  if (!sub) return;
+  const score = parseFloat(document.getElementById('hr_cal_score')?.value);
+  const cat = document.getElementById('hr_cal_cat')?.value;
+  const notes = document.getElementById('hr_cal_notes')?.value||'';
+  sub.hrCalib = { finalScore: score||null, finalCategory: cat||null, notes, calibratedAt: new Date().toISOString() };
+  sub.status = 'hr_calibrated';
+  try {
+    await store_save_async('sub_'+id, sub);
+    document.getElementById('hr-modal')?.remove();
+    toast('Calibration saved.');
+    render();
+  } catch(e) {
+    toast('Failed to save calibration. Please try again.');
+  }
+}
+
+async function markFinal(id) {
+  const sub = store_load('sub_'+id);
+  if (!sub) return;
+  const score = parseFloat(document.getElementById('hr_cal_score')?.value);
+  const cat = document.getElementById('hr_cal_cat')?.value;
+  const notes = document.getElementById('hr_cal_notes')?.value||'';
+  sub.hrCalib = { finalScore: score||null, finalCategory: cat||null, notes, calibratedAt: new Date().toISOString() };
+  sub.status = 'final';
+  try {
+    await store_save_async('sub_'+id, sub);
+    document.getElementById('hr-modal')?.remove();
+    const fc = sub.hrCalib;
+    const subject = encodeURIComponent(`Your Performance Rating 2025/26 — ${sub.name}`);
+    const body = encodeURIComponent(
+      `Dear ${sub.name},\n\nYour performance assessment for 2025/26 has been finalised following the executive calibration session.\n\nYour final rating: ${fc.finalScore||'?'}/4 — ${fc.finalCategory||'?'}\n\n${fc.notes?'Notes from HR:\n'+fc.notes+'\n\n':''}Please schedule a meeting with your line manager (${sub.manager}) to discuss your rating and development plan.\n\nKind regards,\nHR · ${CONFIG.ORG_NAME}`
+    );
+    window.location.href = `mailto:${sub.managerEmail}?subject=${subject}&body=${body}`;
+    toast('Final rating saved. Email to employee has been prepared.');
+    render();
+  } catch(e) {
+    toast('Failed to save. Please try again.');
+  }
+}
+
+function exportCSV() {
+  const all = store_list();
+  const headers = ['Name','Role','Department','Manager','Self Biz Score','Self Values Score','Self Final Score','Self Category','Mgr Biz Score','Mgr Values Score','Mgr Final Score','Mgr Category','HR Calibrated Score','HR Category','Final Status','Submitted At'];
+  const rows = all.map(s => {
+    const m = s.mgrReview;
+    const h = s.hrCalib;
+    return [
+      s.name, s.role, s.dept, s.manager,
+      s.bizScore||'', s.valScore||'', s.finalScore||'', s.finalCategory||'',
+      m?.bizScore||'', m?.valScore||'', m?.finalScore||'', m?.finalCategory||'',
+      h?.finalScore||'', h?.finalCategory||'',
+      s.status, fmtDate(s.submittedAt)
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Fulcrum_PM_Report_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Report downloaded as CSV.');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SETUP GUIDE TAB
+// ─────────────────────────────────────────────────────────────────────────────
+function renderSetup() {
+  const url = window.location.href.split('?')[0];
+  document.getElementById('main').innerHTML = `
+  <div class="info-box">
+    <strong>Your shareable form link:</strong><br>
+    <code>${url}</code><br><br>
+    Share this link with employees via email. They click it, complete their self-assessment, and submit — the workflow starts automatically.
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Hosting on GitHub Pages (Free) — Step by Step</h2></div>
+    <div class="card-body">
+      <div class="step-box"><div class="step-num">Step 1</div><p>Go to <code>github.com</code> and create a free account if you don't have one.</p></div>
+      <div class="step-box"><div class="step-num">Step 2</div><p>Click the <strong>+</strong> icon (top right) → <strong>New repository</strong>. Name it <code>fulcrum-performance</code>. Set it to <strong>Public</strong>. Click <strong>Create repository</strong>.</p></div>
+      <div class="step-box"><div class="step-num">Step 3</div><p>Click <strong>uploading an existing file</strong>. Upload <code>fulcrum-performance-assessment.html</code> (the file you downloaded). Then <strong>rename it</strong> to <code>index.html</code> before uploading.</p></div>
+      <div class="step-box"><div class="step-num">Step 4</div><p>Click <strong>Settings</strong> → <strong>Pages</strong> → under Source select <strong>main</strong> branch → click <strong>Save</strong>.</p></div>
+      <div class="step-box"><div class="step-num">Step 5</div><p>After 2–3 minutes your form is live at: <code>https://[your-github-username].github.io/fulcrum-performance/</code></p></div>
+      <div class="step-box"><div class="step-num">Step 6</div><p>Email that link to all employees and managers. That is your shareable URL.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Migrating to SharePoint (When Ready)</h2></div>
+    <div class="card-body">
+      <div class="step-box"><div class="step-num">Step 1</div><p>In your SharePoint site, go to <strong>Site Contents → Site Assets</strong>.</p></div>
+      <div class="step-box"><div class="step-num">Step 2</div><p>Upload <code>fulcrum-performance-assessment.html</code> to Site Assets.</p></div>
+      <div class="step-box"><div class="step-num">Step 3</div><p>Your new URL will be: <code>https://[company].sharepoint.com/sites/HR/SiteAssets/fulcrum-performance-assessment.html</code>. Share this with all staff.</p></div>
+      <div class="step-box"><div class="step-num">Step 4</div><p>To connect to SharePoint Lists instead of browser storage, open the HTML file in a text editor and replace the 3 storage functions at the top of the script (clearly marked with MIGRATION NOTE comments).</p></div>
+      <div class="mig-note">⚠ Important: browser localStorage stores data per device. For a shared multi-user solution, connect to SharePoint Lists via Power Automate. Evolvra can assist with this configuration.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Email Configuration</h2></div>
+    <div class="card-body">
+      <p style="font-size:12px;margin-bottom:10px">The form currently sends email notifications using <strong>mailto:</strong> links. When a user clicks Submit, their default email client (Outlook) opens with a pre-written email ready to send. No API setup is required.</p>
+      <p style="font-size:12px;margin-bottom:10px"><strong>HR notification email:</strong> Currently set to <code>${CONFIG.HR_EMAIL}</code>. To change this, open the HTML file in a text editor and update the <code>HR_EMAIL</code> value at the top of the script.</p>
+      <p style="font-size:12px">For fully automatic email sending (no manual send step), Evolvra can configure Power Automate to handle all notifications when the form is hosted on SharePoint.</p>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESET
+// ─────────────────────────────────────────────────────────────────────────────
+function resetForm(isMgr) {
+  if (!confirm('Reset all entered data for this form? This cannot be undone.')) return;
+  if (isMgr) { mgrRatings = {}; } else { empRatings = {}; }
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MAIN RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+function render() {
+  if (currentTab === 'employee') renderEmployee();
+  else if (currentTab === 'manager') renderManager();
+  else if (currentTab === 'hr') renderHR();
+  else if (currentTab === 'setup') renderSetup();
+}
+
+// Check URL params on load
+window.addEventListener('DOMContentLoaded', async () => {
+  await initStorage();
+  const tab = getURLParam('tab');
+  const id = getURLParam('id');
+  if (tab === 'manager' && id) {
+    currentSubId = id;
+    currentTab = 'manager';
+    document.querySelectorAll('.nav-tab').forEach(el => {
+      el.classList.toggle('active', el.dataset.tab === 'manager');
+    });
+  }
+  render();
+});
+</script>
+</body>
+</html>
